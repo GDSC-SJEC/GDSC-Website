@@ -1,0 +1,44 @@
+---
+import Icon from "astro-icon";
+import Logo from "./Logo.astro";
+
+const navItems = [
+  { title: "Events", url: "events" },
+  { title: "Projects", url: "projects" },
+  { title: "Team", url: "team" },
+  { title: "FAQ", url: "https://faq.gdscsjec.in/" },
+  { title: "Join Us", url: "https://gdsc.community.dev/st-joseph-engineering-college-mangaluru" }
+];
+
+const desktopIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block";
+const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden";
+
+---
+<header class="text-lg dark:text-zinc-300 mx-auto max-w-6xl flex flex-row !bg-opacity-90 justify-between top-0">
+  <a href="/" class="mx-2 my-5 flex items-center" aria-label="Website Logo">
+    <Logo />
+  </a>
+  <nav class="pt-6 flex flex-row space-x-8">
+    {
+        navItems.map(({ title, url }) => (
+            <a class={desktopIcons} href={url}>
+                {title}
+            </a>
+        ))
+    }
+  </nav>
+  <button class="nav-toggle mx-8 my-5 sm:hidden" aria-label="menu button">
+    <Icon name="lucide:menu" class="w-8 h-8" />
+  </button>
+</header>
+<div class="nav-menu hidden top-[76px]">
+  <nav class="m-6 flex flex-col inline-flex space-y-3">
+    {
+        navItems.map(({ title, url }) => (
+            <a class={mobileIcons} href={url}>
+                {title}
+            </a>
+        ))
+    }
+  </nav>
+</div>

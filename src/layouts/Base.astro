@@ -1,0 +1,112 @@
+---
+import { Seo } from 'astro-seo-meta';
+import Header from '#/components/Header.astro';
+import Footer from "#/components/Footer.astro";
+import ThemeToggle from '#/components/ThemeToggle.astro';
+import "#/styles/index.css";
+import "@fontsource/inter/variable.css";
+
+const { title, description } = Astro.props;
+---
+<html lang="en" class="motion-safe:scroll-smooth 2xl:text-[20px]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="name" content="GDSC DSC SJEC">
+    <meta name="viewport" content="width=device-width" />
+    <Seo
+      title={title}
+      description={description}
+      keywords={["gdsc", "sjec", "gdsc-sjec"]}
+      icon="favicon.svg?v=3"
+      colorScheme="dark"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap"
+      />
+
+    </noscript>
+    <script is:inline>
+      const primaryColorScheme = "none";
+      const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const currentTheme = localStorage.getItem("theme");
+      let theme;
+      if (currentTheme) {
+        theme = currentTheme === "dark" ? "dark" : "";
+      } else {
+        if (primaryColorScheme === "dark" || (primaryColorScheme === "none" && darkModeMediaQuery)) {
+          theme = "dark";
+        } else if (primaryColorScheme === "light") {
+          theme = "";
+        } else {
+          theme = darkModeMediaQuery ? "dark" : "";
+        }
+      }
+      document.documentElement.className = theme;
+    </script>
+    <script>
+      const themeBtn = document.querySelector(".theme-toggle");
+      const htmlClassList = document.documentElement.classList;
+      themeBtn.addEventListener("click", function () {
+        if (htmlClassList.contains("dark")) {
+          localStorage.setItem("theme", "light");
+          htmlClassList.remove("dark");
+        } else {
+          localStorage.setItem("theme", "dark");
+          htmlClassList.add("dark");
+        }
+      });
+    </script>
+    <script>
+      const navBtn = document.querySelector(".nav-toggle");
+      const navMenu = document.querySelector(".nav-menu");
+      navBtn.addEventListener("click", function () {
+        navMenu.classList.toggle("hidden");
+      });
+    </script>
+  </head>
+  <body class="antialiased tracking-tight text-gray-900 bg-white dark:text-slate-200 dark:bg-slate-900">
+    <Header />
+		<main>
+				<slot />
+		</main>
+    <ThemeToggle />
+		<Footer />
+  </body>
+</html>
+
+<script is:inline>
+  function getUserTheme() {
+    try {
+      return localStorage.getItem("theme");
+    } catch {
+      return null;
+    }
+  }
+  const userTheme = getUserTheme();
+  const isDarkOs = matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark = userTheme === "dark" || (!userTheme && isDarkOs);
+  const html = document.documentElement;
+  if (isDark) {
+    html.classList.add("dark");
+  } else {
+    html.classList.remove("dark");
+  }
+</script>
